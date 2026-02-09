@@ -55,9 +55,41 @@ export class Background {
 
     this.time = 0;
     this.mouse = { x: 0, y: 0, active: false };
-    this.items = [];
+    this.items = [];         // Hearts
+    this.stars = [];         // Demo Stars
+    this.shootingStars = []; // Demo Shooting Stars
 
+    this.showHearts = false; 
+    this.heartOpacity = 0;   
+    this.demoOpacity = 1;    // Full visibility for demo effects initially
+    
     this._initialize();
+  }
+
+  setShowHearts(visible) {
+      this.showHearts = visible;
+      this.heartOpacity = visible ? 1 : 0;
+      this.demoOpacity = visible ? 0 : 1;
+  }
+
+  fadeInHearts(duration = 2000) {
+      this.showHearts = true;
+      
+      const startTime = performance.now();
+      
+      const animateFade = (currentTime) => {
+          const elapsed = currentTime - startTime;
+          const progress = Math.min(elapsed / duration, 1);
+          
+          this.heartOpacity = progress;
+          this.demoOpacity = 1 - progress; // Fade out demo effects
+          
+          if (progress < 1) {
+              requestAnimationFrame(animateFade);
+          }
+      };
+      
+      requestAnimationFrame(animateFade);
   }
 
   _initialize() {
@@ -70,6 +102,10 @@ export class Background {
     this.canvas.addEventListener("mouseleave", this._handleMouseLeave);
 
     this._setupCanvas();
+
+    // Start shooting star interval
+    setInterval(() => this._createShootingStar(), 1500);
+
     this.animate();
   }
 
@@ -84,7 +120,39 @@ export class Background {
   _setupCanvas() {
     this.canvas.width = window.innerWidth;
     this.canvas.height = window.innerHeight;
-    this._generateItems();
+    this._generateItems(); // Hearts
+    this._generateStars(); // Demo Stars
+  }
+
+  _generateStars() {
+      this.stars = [];
+      for (let i = 0; i < 200; i++) {
+        this.stars.push({
+          x: Math.random() * this.canvas.width,
+          y: Math.random() * this.canvas.height,
+          radius: Math.random() * 1.5 + 0.5,
+          alpha: Math.random(),
+          delta: (Math.random() * 0.02) + 0.005
+        });
+      }
+  }
+
+  _drawStars() {
+      // Skip if fully transparent
+      if (this.demoOpacity <= 0) return;
+
+      this.stars.forEach(star => {
+        star.alpha += star.delta;
+        if (star.alpha <= 0 || star.alpha >= 1) star.delta *= -1;
+        
+        this.ctx.save();
+        this.ctx.globalAlpha = star.alpha * this.demoOpacity; // Apply cross-fade
+        this.ctx.fillStyle = "white";
+        this.ctx.beginPath();
+        this.ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
+        this.ctx.fill();
+        this.ctx.restore();
+      });
   }
 
   _generateItems() {
@@ -103,8 +171,51 @@ export class Background {
     });
   }
 
+  _createShootingStar() {
+      const startX = Math.random() * this.canvas.width;
+      const startY = Math.random() * this.canvas.height / 2;
+      this.shootingStars.push({
+          x: startX,
+          y: startY,
+          length: Math.random() * 300 + 100,
+          speed: Math.random() * 10 + 6,
+          angle: Math.PI / 4,
+          opacity: 1
+      });
+  }
+
+  _drawShootingStars() {
+      // Skip if fully transparent
+      if (this.demoOpacity <= 0) return;
+
+      for (let i = this.shootingStars.length - 1; i >= 0; i--) {
+          const s = this.shootingStars[i];
+          const endX = s.x - Math.cos(s.angle) * s.length;
+          const endY = s.y - Math.sin(s.angle) * s.length;
+
+          const gradient = this.ctx.createLinearGradient(s.x, s.y, endX, endY);
+          gradient.addColorStop(0, `rgba(255, 255, 255, ${s.opacity * this.demoOpacity})`);
+          gradient.addColorStop(1, `rgba(255, 255, 255, 0)`);
+
+          this.ctx.strokeStyle = gradient;
+          this.ctx.lineWidth = 2;
+          this.ctx.beginPath();
+          this.ctx.moveTo(s.x, s.y);
+          this.ctx.lineTo(endX, endY);
+          this.ctx.stroke();
+
+          s.x += Math.cos(s.angle) * s.speed;
+          s.y += Math.sin(s.angle) * s.speed;
+          s.opacity -= 0.01;
+
+          if (s.opacity <= 0) {
+              this.shootingStars.splice(i, 1);
+          }
+      }
+  }
+
   _drawHeart(x, y, size, color, opacity) {
-    this.ctx.globalAlpha = opacity;
+    this.ctx.globalAlpha = opacity * this.heartOpacity;
     this.ctx.fillStyle = color;
     
     this.ctx.save();
@@ -151,14 +262,22 @@ export class Background {
     
     // Gradient Background
     const gradient = this.ctx.createLinearGradient(0, 0, 0, this.canvas.height);
-    gradient.addColorStop(0, '#1a000d');
-    gradient.addColorStop(1, '#4d0026');
+    gradient.addColorStop(0, '#0a0a23'); // Demo Blue/Dark
+    gradient.addColorStop(1, '#2c014e'); // Demo Purple
     this.ctx.fillStyle = gradient;
     this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
 
-    this.items.forEach(item => {
-        this._drawHeart(item.x, item.y, item.size, item.color, item.opacity);
-    });
+    // Draw Demo Stars (if visible)
+    this._drawStars();
+    // Draw Shooting Stars (if visible)
+    this._drawShootingStars();
+
+    // Draw Hearts (if visible)
+    if (this.showHearts && this.heartOpacity > 0) {
+        this.items.forEach(item => {
+            this._drawHeart(item.x, item.y, item.size, item.color, item.opacity);
+        });
+    }
   }
 
   animate() {

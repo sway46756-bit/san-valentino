@@ -174,47 +174,56 @@ section:last-of-type {
 }
 
 /* Animation Styles */
-.kittens-container {
+/* Animation Canvas */
+.animation-canvas {
     position: absolute;
-    bottom: 20px;
+    top: 0;
     left: 0;
     width: 100%;
-    display: flex;
-    justify-content: space-between;
-    padding: 0 10%; /* Increase padding to keep them away from edges */
+    height: 100%;
+    z-index: 15; /* Behind text but above background */
+    pointer-events: none;
+}
+
+.kittens-container {
+    position: absolute; /* Changed from previous */
+    bottom: 5vh; /* Match demo style */
+    left: 0;
+    width: 100%;
+    height: 100%; /* To allow positioning relative to it if needed, but mainly for bears */
+    pointer-events: none;
     z-index: 20;
-    pointer-events: none; /* Let clicks pass through */
-    box-sizing: border-box; /* Ensure padding is included in width */
 }
 
 .kitten {
-    width: 150px; /* Use width for images */
-    height: 150px;
-    font-size: 5rem; /* Fallback */
-    transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    transform: scale(0); /* Start hidden */
-    
-    /* Image handling */
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: bottom center;
+    position: absolute;
+    bottom: 0; /* Align to bottom of container */
+    width: 25vw;
+    max-width: 150px;
+    height: auto;
+    opacity: 0; /* Start hidden */
+    transition: opacity 0.5s ease, transform 0.5s ease;
 }
 
 #kitten-left {
-    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><ellipse cx="50" cy="70" rx="40" ry="30" fill="white"/><ellipse cx="30" cy="35" rx="10" ry="25" fill="white"/><ellipse cx="70" cy="35" rx="10" ry="25" fill="white"/><circle cx="40" cy="65" r="3" fill="black"/><circle cx="60" cy="65" r="3" fill="black"/><path d="M45 75 Q50 80 55 75" stroke="black" fill="none" stroke-width="2"/><path d="M30 80 Q50 100 70 80 L50 110 Z" fill="red" transform="translate(10, -20) scale(0.5)"/></svg>');
+    left: 5%;
+    transform: translateX(-50px);
 }
 
 #kitten-right {
-     background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><ellipse cx="50" cy="70" rx="40" ry="30" fill="white"/><ellipse cx="30" cy="35" rx="10" ry="25" fill="white"/><ellipse cx="70" cy="35" rx="10" ry="25" fill="white"/><circle cx="40" cy="65" r="3" fill="black"/><circle cx="60" cy="65" r="3" fill="black"/><path d="M45 75 Q50 80 55 75" stroke="black" fill="none" stroke-width="2"/><path d="M30 80 Q50 100 70 80 L50 110 Z" fill="red" transform="translate(0, -20) scale(0.5)"/></svg>');
-     transform: scale(0) scaleX(-1); /* Flip horizontally */
+    right: 5%;
+    transform: scaleX(-1) translateX(-50px); /* Flip and offset */
+}
+
+/* Show states */
+#kitten-left.show {
+    opacity: 1;
+    transform: translateX(0);
 }
 
 #kitten-right.show {
-    transform: scale(1) scaleX(-1);
-}
-
-.kitten.show {
-    transform: scale(1);
+    opacity: 1;
+    transform: scaleX(-1) translateX(0);
 }
 
 #heart-text-container {
@@ -224,7 +233,7 @@ section:last-of-type {
     transform: translate(-50%, -50%);
     width: 100%;
     height: 100%;
-    z-index: 10;
+    z-index: 20; /* Text above giant heart */
 }
 
 .heart-particle {
@@ -232,7 +241,7 @@ section:last-of-type {
     color: var(--color-primary);
     font-size: 1.5rem;
     text-shadow: 0 0 5px rgba(255, 0, 85, 0.5);
-    z-index: 15;
+    z-index: 25;
     /* Add a delayed pulse to make the heart look alive once formed */
     animation: pulse-particle 1s infinite alternate;
 }
@@ -244,19 +253,19 @@ section:last-of-type {
 
 .ti-amo-text {
     font-family: var(--font-family-display);
-    font-size: 3rem; /* Adjusted size */
+    font-size: 3rem; 
     color: var(--color-text-primary);
     text-shadow: 0 0 20px var(--color-primary);
     
     position: absolute;
-    top: 37%; /* Visual center for the heart shape */
+    top: 37%; 
     left: 50%;
     transform: translate(-50%, -50%) scale(0.5);
     opacity: 0;
     transition: all 1s ease;
     white-space: nowrap;
-    z-index: 25; /* Above hearts */
-    user-select: none; /* Prevent accidental selection */
+    z-index: 30; /* Top most */
+    user-select: none; 
     text-align: center;
 }
 
@@ -265,13 +274,30 @@ section:last-of-type {
     transform: translate(-50%, -50%) scale(1);
 }
 
-/* Big heart is no longer needed if we form it with particles, 
-   but we can keep it for a final 'boom' effect */
+/* Big heart effect */
 #big-heart {
     position: absolute;
     top: 40%;
     left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 0; /* Hidden initially */
-    /* ... rest ... */
+    transform: translate(-50%, -50%) scale(0);
+    font-size: 25rem;
+    color: rgba(255, 0, 85, 0.1);
+    text-shadow: 0 0 50px rgba(255, 0, 85, 0.3);
+    z-index: 10; /* Behind particles */
+    opacity: 0;
+    transition: all 2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    pointer-events: none;
+}
+
+#big-heart.show {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+    animation: heartbeat 3s infinite;
+}
+
+@keyframes heartbeat {
+    0% { transform: translate(-50%, -50%) scale(1); }
+    15% { transform: translate(-50%, -50%) scale(1.1); }
+    30% { transform: translate(-50%, -50%) scale(1); }
+    100% { transform: translate(-50%, -50%) scale(1); }
 }

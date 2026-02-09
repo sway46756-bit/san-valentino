@@ -32,10 +32,10 @@
   --color-text-active: #ffffff;
 
   /* === BACKGROUND COLORS === */
-  --color-bg-primary: #1a000d; /* Very dark red/black */
-  --color-bg-secondary: #33001a; /* Dark red */
-  --color-bg-tertiary: rgba(50, 0, 20, 0.5);
-  --color-bg-overlay: rgba(0, 0, 0, 0.6);
+  --color-bg-primary: #0a0a23; /* Demo Dark Blue */
+  --color-bg-secondary: #2c014e; /* Demo Purple */
+  --color-bg-tertiary: rgba(44, 1, 78, 0.5);
+  --color-bg-overlay: rgba(10, 10, 35, 0.8);
 
   /* === SURFACE COLORS - Glassmorphism === */
   --color-surface-glass: linear-gradient(
@@ -84,7 +84,7 @@
   /* ... */
 
   /* === RGB ALIASES === */
-  --color-background-rgb: 26, 0, 13; 
+  --color-background-rgb: 10, 10, 35; 
   --color-text-rgb: var(--color-text-primary-rgb);
 }
 
