@@ -1,1 +1,59 @@
+<!doctype html>
+<html>
+  <head>
+    <!-- Meta -->
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <meta name="author" content="Anto426" />
+    <!-- Title -->
+    <title>Happy Valentine's Day!</title>
+    <!-- Icon -->
+    <link rel="icon" href="./src/assets/images/icon.png" />
+    <!-- CSS -->
+    <link rel="stylesheet" href="./src/styles/main.css?v=valentine" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Outfit:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <!-- JS -->
+    <script type="module" src="./src/scripts/main.js"></script>
+  </head>
+  <!-- Body -->
+  <body>
+    <!-- Background Canvas -->
+    <canvas id="backgroundCanvas" class="background"></canvas>
+    
+    <main class="main" id="home">
+        <!-- Intro Section -->
+        <div id="intro-section" class="container-center">
+            <h1 class="intro-title">I have something for you...</h1>
+            <button id="start-btn" class="heart-btn">
+                <i class="heart-icon">❤️</i>
+                <span>Click Me</span>
+            </button>
+        </div>
 
+        <!-- Animation Section (Hidden initially) -->
+        <div id="animation-section" class="container-center hidden">
+            <div class="kittens-container">
+                <div id="kitten-left" class="kitten"></div> 
+                <div id="kitten-right" class="kitten"></div>
+            </div>
+            <div id="heart-text-container">
+                <h1 id="ti-amo-text" class="ti-amo-text">Te Amo</h1>
+            </div>
+            <div id="big-heart" class="hidden">❤️</div>
+        </div>
+
+        <!-- Message Section (Hidden initially) -->
+        <div id="message-section" class="container-center hidden">
+            <div class="message-card glass-panel">
+                <p id="typewriter-text" class="love-letter"></p>
+            </div>
+        </div>
+    </main>
+  </body>
+</html>

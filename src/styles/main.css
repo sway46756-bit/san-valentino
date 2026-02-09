@@ -1,0 +1,277 @@
+/* =========================
+   Main Stylesheet - Modular CSS
+   =========================
+   This file imports all modular CSS components
+   for the Antosite portfolio website.
+   ========================= */
+
+/* Base styles */
+@import url('./base/variables.css');
+
+
+/* App-level layout adjustments */
+/* Background canvas - full page */
+.background {
+   position: fixed;
+   inset: 0;
+   width: 100vw;
+   height: 100vh;
+   z-index: -1; /* Force background behind everything */
+   pointer-events: none;
+   display: block;
+}
+
+/* Ensure main app content is layered above the background - NO CENTER CONSTRAINT */
+.main {
+   position: relative;
+   z-index: 10; /* Boost z-index */
+   display: block; /* Cambiato da grid a block per evitare troncature */
+   display: block; /* Cambiato da grid a block per evitare troncature */
+   min-height: 100vh;
+   width: 100%;
+   max-width: 100vw;
+   margin: 0;
+   padding: 0;
+   border: 0;
+   outline: 0;
+   overflow: visible; /* Assicura che il contenuto non venga nascosto */
+}
+
+.main-content {
+   width: 100%;
+   max-width: 100vw;
+   overflow-x: hidden;
+   margin: 0;
+   padding: 0;
+   border: 0;
+   outline: 0;
+   height: auto; /* Permette espansione automatica */
+   min-height: 100vh; /* Ma mantiene il minimo */
+}
+
+/* General layout improvements for better spacing and centering */
+body {
+   line-height: 1.6;
+   -webkit-font-smoothing: antialiased;
+   -moz-osx-font-smoothing: grayscale;
+   margin: 0;
+   padding: 0;
+   width: 100%;
+   min-height: 100vh;
+   overflow-x: hidden;
+   position: relative;
+}
+
+html {
+   overflow-x: hidden;
+   scroll-behavior: smooth;
+}
+
+/* Improve overall section spacing and readability */
+section {
+   margin-bottom: var(--space-6);
+}
+
+section:last-of-type {
+   margin-bottom: var(--space-4);
+}
+
+/* Enhanced focus states for accessibility */
+/* Valentine's Specific Styles */
+
+.container-center {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    z-index: 10;
+    pointer-events: none; /* Default for container, enable for children */
+}
+
+/* Enable pointer events for interactive children */
+.container-center > * {
+    pointer-events: auto;
+}
+
+.hidden {
+    opacity: 0;
+    pointer-events: none;
+    display: none !important; /* Ensure it's hidden */
+}
+
+/* Intro Styles */
+.intro-title {
+    font-family: var(--font-family-display);
+    font-size: 4rem;
+    color: var(--color-text-primary);
+    margin-bottom: 3rem;
+    text-shadow: 0 0 15px rgba(255, 0, 85, 0.6);
+    animation: float 3s ease-in-out infinite;
+    text-align: center;
+}
+
+.heart-btn {
+    background: linear-gradient(135deg, #ff0055 0%, #ff4d88 100%);
+    color: white;
+    font-family: var(--font-family-sans);
+    font-weight: 700;
+    font-size: 1.2rem;
+    padding: 1rem 3rem;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    box-shadow: 0 10px 25px rgba(255, 0, 85, 0.4);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    animation: pulse-btn 2s infinite;
+}
+
+.heart-btn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 15px 35px rgba(255, 0, 85, 0.6);
+}
+
+@keyframes pulse-btn {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+/* Message Styles */
+.message-card {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 20px;
+    padding: 40px;
+    max-width: 90%;
+    width: 600px;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+}
+
+.love-letter {
+    font-family: var(--font-family-display);
+    font-size: var(--font-size-2xl); /* Bigger font for impact */
+    color: var(--color-text-primary);
+    line-height: 1.6;
+    min-height: 200px; /* Prevent layout shift */
+    white-space: pre-wrap; /* Preserve formatting */
+}
+
+/* Blinking cursor effect */
+.love-letter::after {
+    content: '|';
+    animation: blink 1s infinite;
+}
+
+/* Animation Styles */
+.kittens-container {
+    position: absolute;
+    bottom: 20px;
+    left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 10%; /* Increase padding to keep them away from edges */
+    z-index: 20;
+    pointer-events: none; /* Let clicks pass through */
+    box-sizing: border-box; /* Ensure padding is included in width */
+}
+
+.kitten {
+    width: 150px; /* Use width for images */
+    height: 150px;
+    font-size: 5rem; /* Fallback */
+    transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    transform: scale(0); /* Start hidden */
+    
+    /* Image handling */
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: bottom center;
+}
+
+#kitten-left {
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><ellipse cx="50" cy="70" rx="40" ry="30" fill="white"/><ellipse cx="30" cy="35" rx="10" ry="25" fill="white"/><ellipse cx="70" cy="35" rx="10" ry="25" fill="white"/><circle cx="40" cy="65" r="3" fill="black"/><circle cx="60" cy="65" r="3" fill="black"/><path d="M45 75 Q50 80 55 75" stroke="black" fill="none" stroke-width="2"/><path d="M30 80 Q50 100 70 80 L50 110 Z" fill="red" transform="translate(10, -20) scale(0.5)"/></svg>');
+}
+
+#kitten-right {
+     background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><ellipse cx="50" cy="70" rx="40" ry="30" fill="white"/><ellipse cx="30" cy="35" rx="10" ry="25" fill="white"/><ellipse cx="70" cy="35" rx="10" ry="25" fill="white"/><circle cx="40" cy="65" r="3" fill="black"/><circle cx="60" cy="65" r="3" fill="black"/><path d="M45 75 Q50 80 55 75" stroke="black" fill="none" stroke-width="2"/><path d="M30 80 Q50 100 70 80 L50 110 Z" fill="red" transform="translate(0, -20) scale(0.5)"/></svg>');
+     transform: scale(0) scaleX(-1); /* Flip horizontally */
+}
+
+#kitten-right.show {
+    transform: scale(1) scaleX(-1);
+}
+
+.kitten.show {
+    transform: scale(1);
+}
+
+#heart-text-container {
+    position: absolute;
+    top: 50%; /* Center vertically */
+    left: 50%; /* Center horizontally */
+    transform: translate(-50%, -50%);
+    width: 100%;
+    height: 100%;
+    z-index: 10;
+}
+
+.heart-particle {
+    position: absolute;
+    color: var(--color-primary);
+    font-size: 1.5rem;
+    text-shadow: 0 0 5px rgba(255, 0, 85, 0.5);
+    z-index: 15;
+    /* Add a delayed pulse to make the heart look alive once formed */
+    animation: pulse-particle 1s infinite alternate;
+}
+
+@keyframes pulse-particle {
+    0% { transform: scale(1); }
+    100% { transform: scale(1.1); }
+}
+
+.ti-amo-text {
+    font-family: var(--font-family-display);
+    font-size: 3rem; /* Adjusted size */
+    color: var(--color-text-primary);
+    text-shadow: 0 0 20px var(--color-primary);
+    
+    position: absolute;
+    top: 37%; /* Visual center for the heart shape */
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.5);
+    opacity: 0;
+    transition: all 1s ease;
+    white-space: nowrap;
+    z-index: 25; /* Above hearts */
+    user-select: none; /* Prevent accidental selection */
+    text-align: center;
+}
+
+.ti-amo-text.show {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+}
+
+/* Big heart is no longer needed if we form it with particles, 
+   but we can keep it for a final 'boom' effect */
+#big-heart {
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 0; /* Hidden initially */
+    /* ... rest ... */
+}

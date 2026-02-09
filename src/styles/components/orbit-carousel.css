@@ -1,0 +1,67 @@
+/* =========================
+   Orbit Carousel - Simplified Linear Slider
+   ========================= */
+
+.orbit-carousel {
+  width: 100%;
+  height: auto;
+  min-height: clamp(320px, 60vw, 520px);
+  overflow: visible;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-block: clamp(0.75rem, 3vw, 1.5rem);
+}
+
+.orbit-track {
+  display: flex;
+  gap: 30px;
+  align-items: center;
+  will-change: transform;
+  transform: translateX(0);
+}
+
+.orbit-item {
+  flex: 0 0 auto;
+  transform: none;
+  position: relative;
+}
+
+.orbit-carousel .skill-card,
+.orbit-carousel .project-card {
+  height: auto;
+  padding: clamp(var(--space-3), 3vw, var(--space-4));
+  background: rgba(var(--color-primary-rgb), 0.12);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+  box-shadow: var(--shadow-sm);
+  animation: none;
+}
+
+/* Dimensioni distinte per sezione */
+.skills-orbit .skill-card {
+  width: clamp(240px, 40vw, 340px);
+  max-width: 360px;
+  min-height: clamp(200px, 44vw, 260px);
+}
+
+.projects-orbit .project-card {
+  width: clamp(500px, 66vw, 500px);
+  max-width: 900px;
+  min-height: clamp(260px, 55vw, 420px);
+}
+
+@media (max-width: 768px) {
+  .orbit-track { gap: 14px; }
+  .orbit-carousel .skill-card,
+  .orbit-carousel .project-card {
+    width: clamp(220px, 70vw, 280px);
+    max-width: 300px;
+  }
+}
+
+@media (max-width: 480px) {
+  .orbit-track { gap: 10px; }
+  .orbit-carousel { --orbit-height: clamp(240px, 70vw, 320px); }
+}
